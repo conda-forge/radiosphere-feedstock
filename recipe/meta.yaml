@@ -9,7 +9,7 @@ source:
   sha256: 739f708e5dcd5472808ff92373be5d1d82027e7e7d106c7ac343cecae8e06dc0
 
 build:
-  number: 2
+  number: 3
   script: {{ PYTHON }} setup.py install -vv
 
 requirements:
