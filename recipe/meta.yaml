@@ -1,50 +1,54 @@
-{% set name = "radioSphere" %}
+{% set name = "radiosphere" %}
+{% set version = "2.0.1" %}
 
 package:
   name: {{ name|lower }}
-  version: 1.0.1
+  version: {{ version }}
 
 source:
-  url: https://gricad-gitlab.univ-grenoble-alpes.fr/ttk/radioSphere/uploads/cda47b0a4fb340a4ec94946b32bb79cb/radioSphere-1.0.1.tar.gz
-  sha256: 739f708e5dcd5472808ff92373be5d1d82027e7e7d106c7ac343cecae8e06dc0
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/radioSphere-{{ version }}.tar.gz
+  sha256: e4f8a600dcbed4a401f61b86f3cdfe66fd8fda98fdbf4d6eafdaf9016f59135f
 
 build:
-  number: 3
-  script: {{ PYTHON }} setup.py install -vv
+  entry_points:
+    - calibrateManyParticles = radioSphere.scripts.calibrateManyParticles:main
+    - calibrateSingleParticle = radioSphere.scripts.calibrateSingleParticle:main
+    - findParticles = radioSphere.scripts.findParticles:main
+    - optimiseParticles = radioSphere.scripts.optimiseParticles:main
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
 
 requirements:
-  build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - cython                                 # [build_platform != target_platform]
-    - numpy                                  # [build_platform != target_platform]
-    - {{ compiler('cxx') }}
   host:
-    - python
+    - python >=3.7
+    - setuptools >=40.6.0
     - pip
-    - eigen
-    - llvm-openmp
-    - numpy
-    - python
-    - cython
   run:
-    - python
-    - matplotlib-base
-    - {{ pin_compatible('numpy') }}
+    - python >=3.7
+    - numpy
     - scipy
+    - scikit-image
     - ipython
     - tifffile
+    - matplotlib-base
+    - tqdm
+    - notebook
+    - json5
+    - numba
 
 test:
   imports:
-    - radioSphere
+    - radiosphere
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
-  home: "https://ttk.gricad-gitlab.univ-grenoble-alpes.fr/ttk/radioSphere"
-  license: GPL-3.0-or-later
-  license_family: GPL3
-  license_file: LICENSE.md
   summary: "Single-projection reconstruction technique for positioning monodisperse spheres in 3D with a divergent x-ray beam"
+  license: GPL-3.0
+  license_file: LICENSE.md
   doc_url: https://ttk.gricad-pages.univ-grenoble-alpes.fr/radioSphere/
 
 extra:
