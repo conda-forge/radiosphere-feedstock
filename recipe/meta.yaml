@@ -1,4 +1,4 @@
-{% set name = "radiosphere" %}
+{% set name = "radioSphere" %}
 {% set version = "2.0.1" %}
 
 package:
@@ -39,7 +39,7 @@ requirements:
 
 test:
   imports:
-    - radiosphere
+    - radioSphere
   commands:
     - pip check
   requires:
